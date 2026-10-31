@@ -747,3 +747,22 @@ _Demo:[ ]
 | level | string |
 | instructor_id | int |
 | category | string |
+
+
+### ۲.۲ MusicCategory
+
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| name | string |
+| parent_id | int |
+
+
+### ۲.۳ Customer
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| name | string |
+| phone | string |
+| address | string |
+
