@@ -826,3 +826,151 @@ _دسترسی: امکان آموزش برای هنرجویان شهرهای کو
 | تعداد باگ بحرانی | صفر | صفر |
 
 ---
+
+
+# Class Diagram — پلتفرم آموزش موسیقی ایرانی
+
+## ۱. مقدمه
+
+این دیاگرام ساختار کلاس‌های اصلی سامانه را نمایش می‌دهد.
+
+## ۲. کلاس‌ها
+
+### ۲.۱ Course
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| title | string |
+| price | decimal |
+| level | string |
+| instructor_id | int |
+| category | string |
+
+
+### ۲.۲ MusicCategory
+
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| name | string |
+| parent_id | int |
+
+
+### ۲.۳ Customer
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| name | string |
+| phone | string |
+| address | string |
+
+
+### ۲.۴ Enrollment
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| student_id | int |
+| total_price | decimal |
+| status | enum |
+
+
+### ۲.۵ EnrollmentItem
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| enrollment_id | int |
+| course_id | int |
+| quantity | int |
+| unit_price | decimal |
+
+
+### ۲.۶ User (Admin)
+
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| full_name | string |
+| email | string |
+| password_hash | string |
+| role | enum |
+
+
+## ۳. روابط
+
+- Instructor 1:N Course
+- Student 1:N Enrollment
+- Course 1:N Enrollment
+- Course 1:N Product
+
+
+## Course
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | نمایش و مدیریت دوره‌های آموزشی |
+| ویژگی‌ها | id, title, price, level, instructor |
+| متدها | getDetails(), updateContent(), isAvailable() |
+| روابط | Category 1:N Course |
+
+
+## Category
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | گروه‌بندی دوره‌های آموزشی و محصولات موسیقی |
+| ویژگی‌ها | id, name, description, parent_id |
+| روابط | Category 1:N Course |
+
+
+## Student
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | مدیریت اطلاعات هنرجو و سوابق آموزشی |
+| ویژگی‌ها | id, name, phone, email |
+| متدها | enrollCourse(), viewProgress() |
+| روابط | Student 1:N Enrollment |
+
+
+## Enrollment
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | مدیریت ثبت‌نام هنرجویان در دوره‌ها |
+| ویژگی‌ها | id, total, status, created_at |
+| متدها | calculateTotal(), updateStatus() |
+| روابط | Student 1:N Enrollment, Enrollment 1:N EnrollmentItem |
+
+
+## Enrollment
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | ثبت‌نام هنرجو در دوره‌های آموزشی |
+| ویژگی‌ها | id, enrolled_at, progress, status |
+| متدها | updateProgress() |
+| روابط | Student 1:N Enrollment |
+
+
+## User (Admin)
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | مدیریت کاربران، دوره‌ها و بخش‌های مختلف سامانه |
+| ویژگی‌ها | id, email, password_hash, role |
+| متدها | login(), logout() |
+
+
+# Sequence Diagram — پلتفرم آموزش موسیقی ایرانی
+
+## ۱. مقدمه
+
+این دیاگرام ترتیب تعاملات بین اجزا را در یک سناریو نشان می‌دهد.
+
+## ۲. سناریو: ثبت‌نام در دوره
+
+### ۲.۱ Actors
+- هنرجو — کاربر
+- Frontend — React
+- Backend — Express
+- Database — PostgreSQL
+
+
