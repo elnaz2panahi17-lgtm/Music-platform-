@@ -796,5 +796,58 @@ _Demo:[ ]
 | role | enum |
 
 
+## ۳. روابط
+
+- Instructor 1:N Course
+- Student 1:N Enrollment
+- Course 1:N Enrollment
+- Course 1:N Product
+
+## Course
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | نمایش و مدیریت دوره‌های آموزشی |
+| ویژگی‌ها | id, title, price, level, instructor |
+| متدها | getDetails(), updateContent(), isAvailable() |
+| روابط | Category 1:N Course |
+
+
+## Category
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | گروه‌بندی دوره‌های آموزشی و محصولات موسیقی |
+| ویژگی‌ها | id, name, description, parent_id |
+| روابط | Category 1:N Course |
+
+
+## Student
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | مدیریت اطلاعات هنرجو و سوابق آموزشی |
+| ویژگی‌ها | id, name, phone, email |
+| متدها | enrollCourse(), viewProgress() |
+| روابط | Student 1:N Enrollment |
+
+
+## Enrollment
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | مدیریت ثبت‌نام هنرجویان در دوره‌ها |
+| ویژگی‌ها | id, total, status, created_at |
+| متدها | calculateTotal(), updateStatus() |
+| روابط | Student 1:N Enrollment, Enrollment 1:N EnrollmentItem |
+
+
+## Enrollment
+
+| بخش | توضیح |
+|------|-------|
+| مسئولیت | ثبت‌نام هنرجو در دوره‌های آموزشی |
+| ویژگی‌ها | id, enrolled_at, progress, status |
+| متدها | updateProgress() |
+| روابط | Student 1:N Enrollment |
+
 
 
