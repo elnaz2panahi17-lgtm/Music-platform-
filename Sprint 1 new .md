@@ -34,3 +34,10 @@
 | Persona |یک کاربر فرضی که ویژگی‌ها، اهداف و رفتارهای گروه هدف را نمایش می‌دهد؛ مثل «هنرجوی مبتدی تار».  |
 | Sprint | دورهٔ کوتاه توسعه (۲–۳ هفته) که در آن بخشی از قابلیت‌های پلتفرم ساخته و تحویل داده می‌شود|
 | DoD | Definition of Done — معیارهای تکمیل‌شدن یک کار؛ یعنی شرایطی که نشان می‌دهد یک قابلیت آموزشی یا بخش از سیستم آمادهٔ ارائه است|
+
+
+۱.۴ مراجع
+- IEEE 830 — Recommended Practice for Software Requirements Specifications
+- Roman Pichler — *Product Vision Board*
+- Scrum Guide (2020)
+- Sommerville — *Software Engineering*, Chapter 1-2
