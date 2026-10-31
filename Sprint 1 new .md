@@ -973,4 +973,381 @@ _دسترسی: امکان آموزش برای هنرجویان شهرهای کو
 - Backend — Express
 - Database — PostgreSQL
 
+### ۲.۲ ترتیب
+
+1. هنرجو روی «ثبت‌نام در دوره» کلیک می‌کند
+2. Frontend درخواست POST به /api/enrollments می‌فرستد
+3. Backend اطلاعات درخواست را اعتبارسنجی می‌کند
+4. Backend وضعیت دوره را در Database بررسی می‌کند
+5. Backend ثبت‌نام هنرجو را ایجاد می‌کند
+6. Backend اطلاعات پیشرفت اولیه را ثبت می‌کند
+7. Backend تأییدیه ثبت‌نام را برمی‌گرداند
+8. Frontend پیام موفقیت نمایش می‌دهد
+
+
+## ۳. سناریو: مشاهدهٔ دوره‌ها
+
+1. هنرجو وارد صفحهٔ دوره‌ها می‌شود
+2. Frontend درخواست GET به /api/courses می‌فرستد
+3. Backend لیست را از Database می‌خواند
+4. Backend لیست را برمی‌گرداند
+5. Frontend نمایش می‌دهد
+
+
+
+## ۴. خطاهای ممکن
+
+| خطا | کد | راهکار |
+|------|-----|---------|
+| دوره یافت نشد | 404 | پیام خطا |
+| ثبت‌نام تکراری | 409 | پیام خطا |
+| خطای سرور | 500 | Retry |
+
+
+# Use Case Specification — پلتفرم آموزش موسیقی ایرانی
+
+## UC-01: مشاهدهٔ دوره‌ها
+
+| بخش | توضیح |
+|------|-------|
+| Actor | هنرجو |
+| Precondition | — |
+| Main Flow | ۱. هنرجو وارد صفحه می‌شود<br>۲. سیستم لیست را می‌خواند<br>۳. نمایش می‌دهد |
+| Alternative | اگر خالی بود → پیام |
+| Postcondition | لیست نمایش داده شد |
+
+
+## UC-02: ثبت‌نام در دوره
+
+| بخش | توضیح |
+|------|-------|
+| Actor | هنرجو |
+| Precondition | دوره انتخاب شده است |
+| Main Flow | ۱. کلیک<br>۲. اعتبارسنجی<br>۳. ثبت<br>۴. نمایش پیام موفقیت |
+| Alternative | ظرفیت تکمیل باشد → پیام خطا |
+| Postcondition | ثبت‌نام انجام شد |
+
+
+## UC-03: ایجاد دوره آموزشی
+
+| بخش | توضیح |
+|------|-------|
+| Actor | ادمین |
+| Precondition | وارد شده |
+| Main Flow | ۱. تکمیل فرم<br>۲. اعتبارسنجی اطلاعات<br>۳. ذخیره دوره |
+| Postcondition | دوره آموزشی ایجاد شد |
+
+
+## UC-04: مشاهدهٔ دوره‌ها
+
+| بخش | توضیح |
+|------|-------|
+| Actor | هنرجو |
+| Precondition | وارد شده |
+| Main Flow | ۱. صفحهٔ دوره‌ها<br>۲. نمایش لیست |
+| Postcondition | دوره‌ها نمایش داده شدند |
+
+
+# Use Case Diagram — پلتفرم آموزش موسیقی ایرانی
+
+## ۱. مقدمه
+
+این دیاگرام نشان می‌دهد چه کسی (Actor) با سیستم چه کاری (Use Case) انجام می‌دهد.
+
+## ۲. Actors
+
+| Actor | نقش |
+|-------|------|
+| هنرجو | استفاده از دوره‌های آموزشی و ثبت‌نام در آن‌ها |
+| ادمین | مدیریت دوره‌ها، کاربران و محتوای سامانه |
+| مدرس | ایجاد و مدیریت دوره‌ها و ارزیابی هنرجویان |
+
+
+## ۳. Use Cases
+
+### ۳.۱ هنرجو
+- مشاهدهٔ دوره‌ها
+- جست‌وجو و فیلتر
+- مشاهدهٔ جزئیات دوره
+- مقایسهٔ دوره‌ها
+- ثبت‌نام در دوره
+- مشاهدهٔ محتوای آموزشی
+- پیگیری پیشرفت
+
+
+### ۳.۲ ادمین
+- ورود به پنل
+- افزودن دوره
+- ویرایش دوره
+- حذف دوره
+- مشاهدهٔ ثبت‌نام‌ها
+- تغییر وضعیت ثبت‌نام
+
+### ۳.۳ مدرس
+- مشاهدهٔ هنرجویان
+- به‌روزرسانی محتوای دوره
+- مشاهدهٔ هشدار تکالیف ارسال‌شده
+
+
+## ۴. سناریوی اصلی — ثبت‌نام در دوره
+
+1. هنرجو وارد صفحهٔ دوره‌ها می‌شود
+2. دوره‌ها را جست‌وجو/فیلتر می‌کند
+3. دوره را انتخاب می‌کند
+4. به صفحهٔ جزئیات دوره می‌رود
+5. ثبت‌نام در دوره را انجام می‌دهد
+6. پیام تأیید ثبت‌نام دریافت می‌کن
+
+
+# سند طرح دیتابیس — پلتفرم آموزش موسیقی ایرانی
+
+| | |
+|---|---|
+| نام پروژه | پلتفرم آموزش موسیقی ایرانی (Music-platform) |
+| نسخهٔ سند | ۱.۰ |
+| تاریخ | ۱۴۰۵ |
+| تهیه‌کننده | [نام مسئول بخش دیتابیس] |
+| وضعیت | پیش‌نویس |
+
+---
+
+## ۱. مقدمه
+
+### ۱.۱ هدف سند
+
+این سند طرح دیتابیس پروژهٔ پلتفرم آموزش موسیقی ایرانی را تعریف می‌کند.
+شامل جدول‌ها، روابط، ایندکس‌ها و تصمیم‌های طراحی است.
+
+### ۱.۲ دامنه
+
+- در دامنه: ساختار جدول‌ها، روابط، ایندکس‌ها و مدیریت اطلاعات آموزشی.
+- خارج از دامنه: پرداخت واقعی، رزرو کلاس خصوصی و امکانات پیشرفتهٔ دانلود محتوا.
+
+---
+
+## ۲. نمای کلی
+
+### ۲.۱ DBMS انتخاب‌شده
+
+PostgreSQL 16
+
+دلیل:
+- پایگاه دادهٔ رابطه‌ای قدرتمند
+- پشتیبانی از JSON
+- رایگان و متن‌باز
+- پشتیبانی از کلیدهای اصلی و خارجی
+- مناسب برای مدیریت و جست‌وجوی اطلاعات آموزشی
+
+### ۲.۲ ERD — نمای کلی
+
+┌─────────────┐       ┌─────────────┐
+│    users    │       │  teachers   │
+│  (کاربران)  │──1:1──│  (استادان)  │
+└──────┬──────┘       └──────┬──────┘
+       │                     │
+       │                     │ 1:N
+       │                     ▼
+       │              ┌─────────────┐
+       │              │   courses   │
+       │              │   (دوره‌ها) │
+       │              └──────┬──────┘
+       │                     │
+       │                     │ 1:N
+       │                     ▼
+       │              ┌─────────────┐
+       │              │   lessons   │
+       │              │   (درس‌ها)  │
+       │              └─────────────┘
+       │
+       │ 1:N
+       ▼
+┌─────────────┐       ┌─────────────┐
+│ enrollments │──N:1──│   courses   │
+│ (ثبت‌نام‌ها)│       │   (دوره‌ها) │
+└─────────────┘       └─────────────┘
+
+┌─────────────┐       ┌─────────────┐
+│ categories  │──1:N──│   courses   │
+│ (دسته‌ها)   │       │   (دوره‌ها) │
+└─────────────┘       └─────────────┘
+
+┌─────────────┐       ┌─────────────┐
+│    users    │──1:N──│  favorites  │
+│  (کاربران)  │       │(علاقه‌مندی) │
+└─────────────┘       └──────┬──────┘
+                             │ N:1
+                             ▼
+                      ┌─────────────┐
+                      │   courses   │
+                      │   (دوره‌ها) │
+                      └─────────────┘
+
+┌─────────────┐       ┌─────────────┐
+│    users    │──1:N──│lesson_progress│
+│  (هنرجویان) │       │ (پیشرفت درس) │
+└─────────────┘       └──────┬──────┘
+                             │ N:1
+                             ▼
+                      ┌─────────────┐
+                      │   lessons   │
+                      │   (درس‌ها)  │
+                      └─────────────┘
+---
+
+## ۳. جداول
+
+### ۳.۱ جدول users (کاربران)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ کاربر |
+| full_name | VARCHAR(120) NOT NULL | نام کامل |
+| email | VARCHAR(255) UNIQUE | ایمیل |
+| password_hash | VARCHAR(255) NOT NULL | هش رمز عبور |
+| role | VARCHAR(20) NOT NULL | student / teacher / admin |
+| is_active | BOOLEAN DEFAULT TRUE | وضعیت حساب |
+| created_at | TIMESTAMPTZ | تاریخ ایجاد |
+
+### ۳.۲ جدول teachers (استادان)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ استاد |
+| user_id | BIGINT UNIQUE NOT NULL | شناسهٔ کاربر |
+| bio | TEXT | معرفی استاد |
+| instrument_specialty | VARCHAR(100) | ساز تخصصی |
+| experience_years | SMALLINT | سابقهٔ تدریس به سال |
+| created_at | TIMESTAMPTZ | تاریخ ایجاد |
+
+### ۳.۳ جدول categories (دسته‌بندی‌ها)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ دسته |
+| name | VARCHAR(100) UNIQUE NOT NULL | نام دسته |
+| slug | VARCHAR(120) UNIQUE NOT NULL | شناسهٔ URL |
+| description | TEXT | توضیحات دسته |
+
+نمونه دسته‌ها: تار، سه‌تار، سنتور، کمانچه، آواز ایرانی و مبانی موسیقی ایرانی.
+
+### ۳.۴ جدول courses (دوره‌ها)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ دوره |
+| teacher_id | BIGINT NOT NULL | شناسهٔ استاد |
+| category_id | BIGINT NOT NULL | شناسهٔ دسته‌بندی |
+| title | VARCHAR(200) NOT NULL | عنوان دوره |
+| description | TEXT | توضیحات دوره |
+| level | VARCHAR(20) NOT NULL | beginner / intermediate / advanced |
+| price | NUMERIC(10,2) NOT NULL | قیمت دوره |
+| status | VARCHAR(20) NOT NULL | draft / published / archived |
+| cover_image_url | VARCHAR(500) | نشانی تصویر دوره |
+| created_at | TIMESTAMPTZ | تاریخ ایجاد |
+| updated_at | TIMESTAMPTZ | تاریخ آخرین ویرایش |
+
+
+### ۳.۵ جدول lessons (درس‌ها)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ درس |
+| course_id | BIGINT NOT NULL | شناسهٔ دوره |
+| title | VARCHAR(200) NOT NULL | عنوان درس |
+| description | TEXT | توضیحات درس |
+| content_type | VARCHAR(20) NOT NULL | video / audio / text |
+| content_url | VARCHAR(1000) | نشانی محتوای آموزشی |
+| duration_seconds | INTEGER | مدت محتوا به ثانیه |
+| lesson_order | INTEGER NOT NULL | ترتیب نمایش درس |
+| is_preview | BOOLEAN DEFAULT FALSE | پیش‌نمایش رایگان |
+| created_at | TIMESTAMPTZ | تاریخ ایجاد |
+
+### ۳.۶ جدول enrollments (ثبت‌نام‌ها)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ ثبت‌نام |
+| student_id | BIGINT NOT NULL | شناسهٔ هنرجو |
+| course_id | BIGINT NOT NULL | شناسهٔ دوره |
+| enrolled_at | TIMESTAMPTZ | زمان ثبت‌نام |
+| status | VARCHAR(20) NOT NULL | active / completed / cancelled |
+| paid_amount | NUMERIC(10,2) | مبلغ پرداخت‌شده، در صورت نیاز |
+
+ترکیب student_id و course_id باید یکتا باشد تا از ثبت‌نام تکراری جلوگیری شود.
+
+### ۳.۷ جدول favorites (علاقه‌مندی‌ها)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ رکورد |
+| user_id | BIGINT NOT NULL | شناسهٔ کاربر |
+| course_id | BIGINT NOT NULL | شناسهٔ دوره |
+| created_at | TIMESTAMPTZ | زمان افزودن |
+
+ترکیب user_id و course_id باید یکتا باشد تا یک دوره برای یک کاربر چند بار ذخیره نشود.
+
+### ۳.۸ جدول lesson_progress (پیشرفت درس‌ها)
+
+| ستون | نوع | توضیح |
+|---|---|---|
+| id | BIGINT PRIMARY KEY | شناسهٔ رکورد |
+| student_id | BIGINT NOT NULL | شناسهٔ هنرجو |
+| lesson_id | BIGINT NOT NULL | شناسهٔ درس |
+| status | VARCHAR(20) NOT NULL | not_started / in_progress / completed |
+| last_position_seconds | INTEGER | آخرین موقعیت پخش |
+| completed_at | TIMESTAMPTZ | زمان تکمیل درس |
+| updated_at | TIMESTAMPTZ | زمان آخرین به‌روزرسانی |
+
+ترکیب student_id و lesson_id باید یکتا باشد.
+
+---
+
+## ۴. روابط
+
+### ۴.۱ یک‌به‌چند (1:N)
+
+| رابطه | توضیح |
+|---|---|
+| teachers → courses | هر استاد می‌تواند چند دوره ارائه کند. |
+| categories → courses | هر دسته می‌تواند شامل چند دوره باشد. |
+| courses → lessons | هر دوره می‌تواند چند درس داشته باشد. |
+| users → enrollments | هر هنرجو می‌تواند در چند دوره ثبت‌نام کند. |
+| courses → enrollments | هر دوره می‌تواند چند هنرجو داشته باشد. |
+| users → lesson_progress | هر هنرجو می‌تواند چند رکورد پیشرفت داشته باشد. |
+| lessons → lesson_progress | هر درس می‌تواند برای چند هنرجو رکورد پیشرفت داشته باشد. |
+
+### ۴.۲ چندبه‌چند (N:M)
+
+| رابطه | جدول واسط | توضیح |
+|---|---|---|
+| users ↔ courses | enrollments | هنرجویان می‌توانند در چند دوره ثبت‌نام کنند. |
+| users ↔ courses | favorites | کاربران می‌توانند چند دوره را به علاقه‌مندی‌ها اضافه کنند. |
+
+---
+
+## ۵. ایندکس‌ها
+
+### ۵.۱ Primary Keys
+
+- users.id
+- teachers.id
+- categories.id
+- courses.id
+- lessons.id
+- enrollments.id
+- favorites.id
+- lesson_progress.id
+
+### ۵.۲ Foreign Keys
+
+- teachers.user_id → users.id
+- courses.teacher_id → teachers.id
+- courses.category_id → categories.id
+- lessons.course_id → courses.id
+- enrollments.student_id → users.id
+- enrollments.course_id → courses.id
+- favorites.user_id → users.id
+- favorites.course_id → courses.id
+- lesson_progress.student_id → users.id
+- lesson_progress.lesson_id → lessons.id
 
