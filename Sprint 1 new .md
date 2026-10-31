@@ -1351,3 +1351,122 @@ PostgreSQL 16
 - lesson_progress.student_id → users.id
 - lesson_progress.lesson_id → lessons.id
 
+
+### ۵.۳ ایندکس های اضافی
+| جدول | ستون | دلیل |
+|---|---|---|
+| users | email | جست‌وجوی حساب و جلوگیری از ایمیل تکراری |
+| courses | category_id | فیلتر دوره‌ها بر اساس ساز یا دسته |
+| courses | teacher_id | نمایش دوره‌های یک استاد |
+| courses | status | فیلتر دوره‌های منتشرشده |
+| lessons | course_id | دریافت درس‌های یک دوره |
+| enrollments | student_id | نمایش ثبت‌نام‌های هنرجو |
+| enrollments | course_id | نمایش هنرجویان یک دوره |
+| favorites | user_id | نمایش علاقه‌مندی‌های کاربر |
+| lesson_progress | student_id | بررسی پیشرفت هنرجو |
+
+---
+
+## ۶. نرمال‌سازی
+
+### ۶.۱ 1NF — حذف گروه‌های تکراری
+
+- هر ستون یک مقدار اتمی دارد.
+- اطلاعات چند درس در یک ستون ذخیره نمی‌شود.
+- هر درس در جدول lessons رکورد مستقل دارد.
+
+### ۶.۲ 2NF — حذف وابستگی جزئی
+
+- اطلاعات هر جدول به کلید اصلی مربوط وابسته است.
+- اطلاعات ثبت‌نام، علاقه‌مندی و پیشرفت در جدول‌های جداگانه نگهداری می‌شوند.
+
+### ۶.۳ 3NF — حذف وابستگی انتقالی
+
+- اطلاعات استادان در جدول teachers نگهداری می‌شود.
+- اطلاعات دسته‌بندی‌ها در جدول categories نگهداری می‌شود.
+- اطلاعات دوره‌ها و درس‌ها در جدول‌های مستقل قرار دارند.
+
+نتیجه: طراحی پیشنهادی با هدف رعایت اصول نرمال‌سازی تا 3NF انجام شده است.
+
+---
+
+## ۷. امنیت داده
+
+### ۷.۱ رمزنگاری
+
+- گذرواژه‌ها با bcrypt یا Argon2id هش می‌شوند.
+- ارتباط با پایگاه داده در محیط عملیاتی با SSL/TLS محافظت می‌شود.
+- رمزهای اتصال دیتابیس نباید در مخزن Git قرار بگیرند.
+
+### ۷.۲ Backup
+
+- پشتیبان‌گیری روزانه، متناسب با امکانات سرویس میزبانی.
+- نگهداری نسخه‌های پشتیبان برای مدت پیشنهادی ۳۰ روز.
+- بازیابی نسخهٔ پشتیبان باید به‌صورت دوره‌ای آزمایش شود.
+
+### ۷.۳ دسترسی
+
+- استفاده از حساب دیتابیس با حداقل دسترسی لازم.
+- هنرجو فقط به اطلاعات ثبت‌نام و پیشرفت خودش دسترسی دارد.
+- استاد فقط مجاز به مدیریت دوره‌ها و درس‌های خودش است.
+- عملیات مدیریتی فقط برای مدیر سامانه مجاز است.
+- کنترل نقش‌ها و مجوزها در سمت سرور انجام می‌شود.
+
+---
+
+## ۸. نمونهٔ Queryها
+
+### ۸.۱ لیست دوره‌های منتشرشدهٔ یک ساز
+
+SELECT
+    c.id,
+    c.title,
+    c.level,
+    c.price,
+    u.full_name AS teacher_name
+FROM courses c
+JOIN categories cat ON cat.id = c.category_id
+JOIN teachers t ON t.id = c.teacher_id
+JOIN users u ON u.id = t.user_id
+WHERE cat.slug = 'tar'
+  AND c.status = 'published'
+ORDER BY c.created_at DESC;
+### ۸.۲ دوره‌های ثبت‌نام‌شدهٔ یک هنرجو
+
+SELECT
+    c.id,
+    c.title,
+    e.enrolled_at,
+    e.status
+FROM enrollments e
+JOIN courses c ON c.id = e.course_id
+WHERE e.student_id = 10
+ORDER BY e.enrolled_at DESC;
+### ۸.۳ پیشرفت یک هنرجو در درس‌ها
+
+SELECT
+    l.title AS lesson_title,
+    lp.status,
+    lp.last_position_seconds,
+    lp.completed_at
+FROM lesson_progress lp
+JOIN lessons l ON l.id = lp.lesson_id
+WHERE lp.student_id = 10
+ORDER BY lp.updated_at DESC;
+### ۸.۴ گزارش ثبت‌نام روزانه
+
+SELECT
+    DATE(enrolled_at) AS date,
+    COUNT(*) AS enrollments,
+    SUM(paid_amount) AS total_amount
+FROM enrollments
+WHERE status IN ('active', 'completed')
+GROUP BY DATE(enrolled_at)
+ORDER BY date DESC;
+---
+
+## تاریخچهٔ تغییرات
+
+| نسخه | تاریخ | تغییرات | تهیه‌کننده |
+|---|---|---|---|
+| ۱.۰ | ۱۴۰۴ | نسخهٔ اولیهٔ طرح دیتابیس | [نام مسئول بخش دیتابیس] |
