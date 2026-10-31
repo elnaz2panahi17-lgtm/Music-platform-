@@ -766,3 +766,35 @@ _Demo:[ ]
 | phone | string |
 | address | string |
 
+### ۲.۴ Enrollment
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| student_id | int |
+| total_price | decimal |
+| status | enum |
+
+
+### ۲.۵ EnrollmentItem
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| enrollment_id | int |
+| course_id | int |
+| quantity | int |
+| unit_price | decimal |
+
+
+### ۲.۶ User (Admin)
+
+| ویژگی | نوع |
+|--------|------|
+| id | int |
+| full_name | string |
+| email | string |
+| password_hash | string |
+| role | enum |
+
+
+
+
